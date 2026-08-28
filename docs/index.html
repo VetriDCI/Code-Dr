@@ -16,7 +16,7 @@
 
 <div class="flex flex-col lg:flex-row min-h-[calc(100vh-76px)]">
   <aside class="w-full lg:w-[380px] p-5 sm:p-6 bg-[#111] border-r border-white/10 flex flex-col gap-4">
-      <div class="flex items-center justify-between gap-2">
+    <div class="flex items-center justify-between gap-2">
       <label class="text-sm text-gray-400" for="prompt">Enna Website Venum? (Tamil/Tanglish/English)</label>
       <span id="charCount" class="text-[11px] text-gray-500">0 / 2500</span>
     </div>
@@ -40,6 +40,17 @@
       <p class="mt-2 text-[11px] text-gray-500">Click an option → edit the message if needed → Generate.</p>
     </div>
 
+    <!-- Generation History Section -->
+    <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-gray-300"><i class="fa-solid fa-clock-rotate-left"></i> Generation History</span>
+        <button id="clearHistory" type="button" class="text-[11px] text-gray-500 hover:text-white">Clear</button>
+      </div>
+      <div id="historyList" class="flex flex-col gap-1.5 max-h-36 overflow-y-auto text-xs text-gray-400">
+        <span class="text-[11px] text-gray-600 italic">No history yet...</span>
+      </div>
+    </div>
+
     <label class="text-sm text-gray-400" for="style">Design Style</label>
     <select id="style" class="bg-[#1a1a1a] border border-white/10 rounded-xl p-3 text-sm">
       <option>Modern & Minimal</option>
@@ -54,21 +65,27 @@
     </button>
 
     <div id="status" class="hidden text-xs rounded-xl p-3 bg-white/5 text-gray-300"></div>
-
-    <div class="mt-2 p-4 bg-white/5 rounded-xl text-xs text-gray-400">
-      <p><b>Setup:</b> GitHub Pages = frontend<br>Render = FastAPI backend<br>Groq = AI generation</p>
-    </div>
     <a id="downloadBtn" class="hidden bg-white text-black p-3 rounded-xl text-center font-bold text-sm">📥 Download HTML</a>
   </aside>
 
   <main class="flex-1 bg-[#0f0f0f] flex flex-col min-h-[600px]">
-    <div class="flex gap-2 p-3 border-b border-white/10 bg-[#111]">
-      <button id="tab-preview" class="tab active px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-eye"></i> Live Preview</button>
-      <button id="tab-code" class="tab px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-code"></i> Code</button>
+    <div class="flex flex-wrap justify-between items-center p-3 border-b border-white/10 bg-[#111] gap-2">
+      <div class="flex gap-2">
+        <button id="tab-preview" class="tab active px-4 py-2 rounded-lg text-sm bg-white/10"><i class="fa-solid fa-eye"></i> Live Preview</button>
+        <button id="tab-code" class="tab px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-code"></i> Code Editor</button>
+      </div>
+      <!-- Responsive Viewport Switcher -->
+      <div id="viewportSwitcher" class="flex items-center gap-1 bg-black/40 p-1 rounded-lg border border-white/10">
+        <button type="button" class="view-mode px-2.5 py-1 text-xs rounded bg-white/20" data-mode="responsive">Responsive</button>
+        <button type="button" class="view-mode px-2.5 py-1 text-xs rounded text-gray-400 hover:text-white" data-mode="mobile"><i class="fa-solid fa-mobile-screen"></i></button>
+        <button type="button" class="view-mode px-2.5 py-1 text-xs rounded text-gray-400 hover:text-white" data-mode="tablet"><i class="fa-solid fa-tablet-screen-button"></i></button>
+      </div>
     </div>
-    <div class="flex-1 relative min-h-[520px]">
-      <iframe id="preview" title="Generated website preview" sandbox="allow-scripts allow-forms allow-modals" class="w-full h-full bg-white hidden"></iframe>
-      <pre id="codeView" class="w-full h-full p-6 overflow-auto text-xs bg-[#0a0a0a] hidden"><code>Code inga varum...</code></pre>
+    <div class="flex-1 relative min-h-[520px] flex items-center justify-center bg-black/50">
+      <div id="previewContainer" class="w-full h-full transition-all duration-300">
+        <iframe id="preview" title="Generated website preview" sandbox="allow-scripts allow-forms allow-modals" class="w-full h-full bg-white hidden"></iframe>
+      </div>
+      <textarea id="codeView" class="w-full h-full p-6 font-mono text-xs bg-[#0a0a0a] text-green-400 focus:outline-none hidden resize-none" placeholder="Generated code inga varum, ungalukku thevaiyana mathangalai neengale edit pannikalam..."></textarea>
       <div id="empty" class="absolute inset-0 flex items-center justify-center text-gray-500 text-center p-6">👈 Prompt kuduthu Generate pannunga</div>
     </div>
   </main>
