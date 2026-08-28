@@ -1,5 +1,5 @@
 // STEP 1: Render.com la backend deploy panna aprom, antha URL ah inga maathu
-const BACKEND_URL = "https://YOUR-RENDER-SERVICE-NAME.onrender.com/generate";
+   const BACKEND_URL = "https://code-dr.onrender.com/generate";
 // Local test ku: "http://localhost:10000/generate"
 
 let lastCode = "";
