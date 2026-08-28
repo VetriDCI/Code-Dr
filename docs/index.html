@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Code Dr - ULTRA</title>
+<title>Code Dr - ULTRA (Vision)</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -11,18 +11,31 @@
 <body class="bg-[#0a0a0a] text-white min-h-screen">
 <header class="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center gap-3">
   <h1 class="text-2xl sm:text-3xl font-black gradient-text">Code Dr ULTRA</h1>
-  <span class="text-xs bg-white/10 px-3 py-1 rounded-full">AI Website Generator</span>
+  <span class="text-xs bg-white/10 px-3 py-1 rounded-full">Vision AI Generator</span>
 </header>
 
 <div class="flex flex-col lg:flex-row min-h-[calc(100vh-76px)]">
   <aside class="w-full lg:w-[380px] p-5 sm:p-6 bg-[#111] border-r border-white/10 flex flex-col gap-4">
     <div class="flex items-center justify-between gap-2">
-      <label class="text-sm text-gray-400" for="prompt">Enna Website Venum? (Tamil/Tanglish/English)</label>
+      <label class="text-sm text-gray-400" for="prompt">Enna Website Venum? (Or Upload Image)</label>
       <span id="charCount" class="text-[11px] text-gray-500">0 / 2500</span>
     </div>
-    <textarea id="prompt" rows="7" maxlength="2500"
+    
+    <textarea id="prompt" rows="5" maxlength="2500"
       class="bg-[#1a1a1a] border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:border-orange-500"
-      placeholder="Example: Modern food delivery website with restaurant cards, search, cart and mobile responsive..."></textarea>
+      placeholder="Describe your website or upload a layout image below..."></textarea>
+
+    <!-- Image Upload Option -->
+    <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3 flex flex-col gap-2">
+      <label class="text-xs font-bold text-gray-300 flex items-center gap-2 cursor-pointer">
+        <i class="fa-solid fa-image text-orange-400"></i> Upload Design Screenshot
+        <input type="file" id="imageInput" accept="image/*" class="hidden">
+      </label>
+      <div id="imagePreviewContainer" class="hidden relative mt-1">
+        <img id="imagePreview" src="" alt="Preview" class="w-full h-24 object-cover rounded-lg border border-white/10">
+        <button type="button" id="removeImage" class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">✕</button>
+      </div>
+    </div>
 
     <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3">
       <div class="flex items-center justify-between mb-2">
@@ -30,23 +43,20 @@
         <button id="clearPrompt" type="button" class="text-[11px] text-gray-500 hover:text-white">Clear</button>
       </div>
       <div class="grid grid-cols-2 gap-2">
-        <button type="button" class="quick-prompt" data-prompt="Create a modern business website with hero section, services, about, testimonials, contact form and mobile responsive design.">Business Website</button>
-        <button type="button" class="quick-prompt" data-prompt="Create a modern e-commerce website with product cards, search, categories, cart, wishlist, product details and responsive mobile design.">E-Commerce</button>
-        <button type="button" class="quick-prompt" data-prompt="Create a restaurant website with menu cards, food categories, table booking, location, contact details and a beautiful mobile responsive layout.">Restaurant</button>
-        <button type="button" class="quick-prompt" data-prompt="Create a SaaS dashboard with sidebar navigation, analytics cards, charts, users table, settings and responsive layout.">Dashboard</button>
-        <button type="button" class="quick-prompt" data-prompt="Create a portfolio website for a developer with hero, skills, projects, experience, contact section and smooth responsive design.">Portfolio</button>
-        <button type="button" class="quick-prompt" data-prompt="Create a modern landing page for an AI product with hero, features, pricing, FAQ, testimonials and call-to-action sections.">AI Landing</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a modern business website with hero section, services, about, testimonials and mobile responsive design.">Business</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a modern e-commerce website with product cards, search, categories and responsive mobile design.">E-Commerce</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a restaurant website with menu cards, food categories, table booking and responsive layout.">Restaurant</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a SaaS dashboard with sidebar navigation, analytics cards, charts and responsive layout.">Dashboard</button>
       </div>
-      <p class="mt-2 text-[11px] text-gray-500">Click an option → edit the message if needed → Generate.</p>
     </div>
 
-    <!-- Generation History Section -->
+    <!-- History Section -->
     <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3 flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-gray-300"><i class="fa-solid fa-clock-rotate-left"></i> Generation History</span>
+        <span class="text-xs font-bold text-gray-300"><i class="fa-solid fa-clock-rotate-left"></i> History</span>
         <button id="clearHistory" type="button" class="text-[11px] text-gray-500 hover:text-white">Clear</button>
       </div>
-      <div id="historyList" class="flex flex-col gap-1.5 max-h-36 overflow-y-auto text-xs text-gray-400">
+      <div id="historyList" class="flex flex-col gap-1.5 max-h-28 overflow-y-auto text-xs text-gray-400">
         <span class="text-[11px] text-gray-600 italic">No history yet...</span>
       </div>
     </div>
@@ -61,7 +71,7 @@
     </select>
 
     <button id="genBtn" class="mt-2 bg-gradient-to-r from-orange-500 to-pink-600 p-4 rounded-xl font-bold hover:scale-[1.02] transition disabled:opacity-60">
-      <i class="fa-solid fa-rocket"></i> Generate LIVE Website
+      <i class="fa-solid fa-rocket"></i> Generate from AI/Vision
     </button>
 
     <div id="status" class="hidden text-xs rounded-xl p-3 bg-white/5 text-gray-300"></div>
@@ -74,7 +84,6 @@
         <button id="tab-preview" class="tab active px-4 py-2 rounded-lg text-sm bg-white/10"><i class="fa-solid fa-eye"></i> Live Preview</button>
         <button id="tab-code" class="tab px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-code"></i> Code Editor</button>
       </div>
-      <!-- Responsive Viewport Switcher -->
       <div id="viewportSwitcher" class="flex items-center gap-1 bg-black/40 p-1 rounded-lg border border-white/10">
         <button type="button" class="view-mode px-2.5 py-1 text-xs rounded bg-white/20" data-mode="responsive">Responsive</button>
         <button type="button" class="view-mode px-2.5 py-1 text-xs rounded text-gray-400 hover:text-white" data-mode="mobile"><i class="fa-solid fa-mobile-screen"></i></button>
@@ -85,8 +94,8 @@
       <div id="previewContainer" class="w-full h-full transition-all duration-300">
         <iframe id="preview" title="Generated website preview" sandbox="allow-scripts allow-forms allow-modals" class="w-full h-full bg-white hidden"></iframe>
       </div>
-      <textarea id="codeView" class="w-full h-full p-6 font-mono text-xs bg-[#0a0a0a] text-green-400 focus:outline-none hidden resize-none" placeholder="Generated code inga varum, ungalukku thevaiyana mathangalai neengale edit pannikalam..."></textarea>
-      <div id="empty" class="absolute inset-0 flex items-center justify-center text-gray-500 text-center p-6">👈 Prompt kuduthu Generate pannunga</div>
+      <textarea id="codeView" class="w-full h-full p-6 font-mono text-xs bg-[#0a0a0a] text-green-400 focus:outline-none hidden resize-none" placeholder="Generated code inga varum..."></textarea>
+      <div id="empty" class="absolute inset-0 flex items-center justify-center text-gray-500 text-center p-6">👈 Prompt kuduthu illana Image upload panni Generate pannunga</div>
     </div>
   </main>
 </div>
