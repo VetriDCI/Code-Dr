@@ -1,6 +1,0 @@
-.gradient-text{background: linear-gradient(90deg,#ff6a00,#ee0979); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-.tab.active{background:white;color:black;}
-.tab{background:#1a1a1a;color:#888;}
-#codeView::-webkit-scrollbar{width:6px} #codeView::-webkit-scrollbar-thumb{background:#333}
-
-.reply-truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;}
