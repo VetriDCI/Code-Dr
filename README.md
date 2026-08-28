@@ -1,14 +1,16 @@
-# Code Dr ULTRA
+# Code Dr ULTRA v6
 
-AI website generator — Groq API (backend) + GitHub Pages (frontend).
+Frontend: `docs/` (GitHub Pages)
+Backend: `backend/` (FastAPI on Render)
+AI: Groq
 
-## Structure
-- `backend/` → deploy to Render.com (Web Service, Docker, Free)
-  - Set Environment Variable `GROQ_API_KEY` in Render dashboard
-- `docs/` → GitHub Pages source (Settings → Pages → Branch: main → Folder: /docs)
+## Render environment variables
+- `GROQ_API_KEY` = your Groq API key
+- Optional `GROQ_MODEL` = `openai/gpt-oss-120b`
+- Optional `MAX_PROMPT_CHARS` = `1800`
+- Optional `MAX_OUTPUT_TOKENS` = `1000`
 
-## Backend URL already set in docs/script.js
-```
-https://code-dr.onrender.com/generate
-```
-If you redeploy backend with a new URL, update that line in `docs/script.js`.
+The backend is deliberately conservative for Groq Free-tier TPM limits. The frontend also has a 90-second timeout and clearer rate-limit/network errors.
+
+## Frontend
+Set `BACKEND_URL` in `docs/script.js` to the real Render `/generate` endpoint before deploying GitHub Pages.

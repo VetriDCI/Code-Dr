@@ -1,4 +1,4 @@
-fastapi
-uvicorn[standard]
-groq
-pydantic
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
+groq>=0.30,<1
+pydantic>=2,<3

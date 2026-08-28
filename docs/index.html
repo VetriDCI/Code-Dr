@@ -3,55 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Code Dr - ULTRA ADVANCED</title>
+<title>Code Dr - ULTRA</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-[#0a0a0a] text-white min-h-screen">
-  <header class="p-6 border-b border-white/10 flex justify-between items-center">
-    <h1 class="text-3xl font-black gradient-text">Code Dr ULTRA</h1>
-    <span class="text-xs bg-white/10 px-3 py-1 rounded-full">By Vetrivel</span>
-  </header>
+<header class="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center gap-3">
+  <h1 class="text-2xl sm:text-3xl font-black gradient-text">Code Dr ULTRA</h1>
+  <span class="text-xs bg-white/10 px-3 py-1 rounded-full">AI Website Generator</span>
+</header>
 
-  <div class="flex flex-col lg:flex-row h-[calc(100vh-80px)]">
-    <!-- Left Panel -->
-    <div class="w-full lg:w-[380px] p-6 bg-[#111] border-r border-white/10 flex flex-col gap-4">
-      <label class="text-sm text-gray-400">Enna Website Venum? (Tamil la kooda sollalam)</label>
-      <textarea id="prompt" rows="5" class="bg-[#1a1a1a] border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:border-orange-500" placeholder="ex: Swiggy maadhiri food delivery website, dark theme, full animation oda"></textarea>
-      
-      <label class="text-sm text-gray-400">Design Style</label>
-      <select id="style" class="bg-[#1a1a1a] border border-white/10 rounded-xl p-3 text-sm">
-        <option>Modern & Minimal</option>
-        <option>Dark Pro</option>
-        <option>Colorful & Creative</option>
-        <option>Glassmorphism</option>
-        <option>Apple Style</option>
-      </select>
+<div class="flex flex-col lg:flex-row min-h-[calc(100vh-76px)]">
+  <aside class="w-full lg:w-[380px] p-5 sm:p-6 bg-[#111] border-r border-white/10 flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-2">
+      <label class="text-sm text-gray-400" for="prompt">Enna Website Venum? (Tamil/Tanglish/English)</label>
+      <span id="charCount" class="text-[11px] text-gray-500">0 / 2500</span>
+    </div>
+    <textarea id="prompt" rows="7" maxlength="2500"
+      class="bg-[#1a1a1a] border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:border-orange-500"
+      placeholder="Example: Modern food delivery website with restaurant cards, search, cart and mobile responsive..."></textarea>
 
-      <button onclick="generate()" id="genBtn" class="mt-4 bg-gradient-to-r from-orange-500 to-pink-600 p-4 rounded-xl font-bold hover:scale-[1.02] transition">
-        <i class="fa-solid fa-rocket"></i> Generate LIVE Website
-      </button>
-
-      <div class="mt-6 p-4 bg-white/5 rounded-xl text-xs text-gray-400">
-        <p><b>How it works:</b> Frontend = GitHub Pages<br>Backend = Hugging Face / Render</p>
+    <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-bold text-gray-300">Quick Message</span>
+        <button id="clearPrompt" type="button" class="text-[11px] text-gray-500 hover:text-white">Clear</button>
       </div>
-      <a id="downloadBtn" class="hidden mt-3 bg-white text-black p-3 rounded-xl text-center font-bold text-sm">📥 Download Code</a>
+      <div class="grid grid-cols-2 gap-2">
+        <button type="button" class="quick-prompt" data-prompt="Create a modern business website with hero section, services, about, testimonials, contact form and mobile responsive design.">Business Website</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a modern e-commerce website with product cards, search, categories, cart, wishlist, product details and responsive mobile design.">E-Commerce</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a restaurant website with menu cards, food categories, table booking, location, contact details and a beautiful mobile responsive layout.">Restaurant</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a SaaS dashboard with sidebar navigation, analytics cards, charts, users table, settings and responsive layout.">Dashboard</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a portfolio website for a developer with hero, skills, projects, experience, contact section and smooth responsive design.">Portfolio</button>
+        <button type="button" class="quick-prompt" data-prompt="Create a modern landing page for an AI product with hero, features, pricing, FAQ, testimonials and call-to-action sections.">AI Landing</button>
+      </div>
+      <p class="mt-2 text-[11px] text-gray-500">Click an option → edit the message if needed → Generate.</p>
     </div>
 
-    <!-- Right Panel -->
-    <div class="flex-1 bg-[#0f0f0f] flex flex-col">
-      <div class="flex gap-2 p-3 border-b border-white/10 bg-[#111]">
-        <button onclick="switchTab('preview')" id="tab-preview" class="tab active px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-eye"></i> Live Preview</button>
-        <button onclick="switchTab('code')" id="tab-code" class="tab px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-code"></i> Code</button>
-      </div>
-      <div class="flex-1 relative">
-        <iframe id="preview" class="w-full h-full bg-white hidden"></iframe>
-        <pre id="codeView" class="w-full h-full p-6 overflow-auto text-xs bg-[#0a0a0a] hidden"><code>Code inga varum...</code></pre>
-        <div id="empty" class="absolute inset-0 flex items-center justify-center text-gray-500">👈 Prompt kuduthu Generate pannunga</div>
-      </div>
+    <label class="text-sm text-gray-400" for="style">Design Style</label>
+    <select id="style" class="bg-[#1a1a1a] border border-white/10 rounded-xl p-3 text-sm">
+      <option>Modern & Minimal</option>
+      <option>Dark Pro</option>
+      <option>Colorful & Creative</option>
+      <option>Glassmorphism</option>
+      <option>Apple Style</option>
+    </select>
+
+    <button id="genBtn" class="mt-2 bg-gradient-to-r from-orange-500 to-pink-600 p-4 rounded-xl font-bold hover:scale-[1.02] transition disabled:opacity-60">
+      <i class="fa-solid fa-rocket"></i> Generate LIVE Website
+    </button>
+
+    <div id="status" class="hidden text-xs rounded-xl p-3 bg-white/5 text-gray-300"></div>
+
+    <div class="mt-2 p-4 bg-white/5 rounded-xl text-xs text-gray-400">
+      <p><b>Setup:</b> GitHub Pages = frontend<br>Render = FastAPI backend<br>Groq = AI generation</p>
     </div>
-  </div>
+    <a id="downloadBtn" class="hidden bg-white text-black p-3 rounded-xl text-center font-bold text-sm">📥 Download HTML</a>
+  </aside>
+
+  <main class="flex-1 bg-[#0f0f0f] flex flex-col min-h-[600px]">
+    <div class="flex gap-2 p-3 border-b border-white/10 bg-[#111]">
+      <button id="tab-preview" class="tab active px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-eye"></i> Live Preview</button>
+      <button id="tab-code" class="tab px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-code"></i> Code</button>
+    </div>
+    <div class="flex-1 relative min-h-[520px]">
+      <iframe id="preview" title="Generated website preview" sandbox="allow-scripts allow-forms allow-modals" class="w-full h-full bg-white hidden"></iframe>
+      <pre id="codeView" class="w-full h-full p-6 overflow-auto text-xs bg-[#0a0a0a] hidden"><code>Code inga varum...</code></pre>
+      <div id="empty" class="absolute inset-0 flex items-center justify-center text-gray-500 text-center p-6">👈 Prompt kuduthu Generate pannunga</div>
+    </div>
+  </main>
+</div>
 <script src="script.js"></script>
 </body>
 </html>

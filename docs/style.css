@@ -1,6 +1,5 @@
-.gradient-text{background: linear-gradient(90deg,#ff6a00,#ee0979); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-.tab.active{background:white;color:black;}
-.tab{background:#1a1a1a;color:#888;}
-#codeView::-webkit-scrollbar{width:6px} #codeView::-webkit-scrollbar-thumb{background:#333}
+.gradient-text{background:linear-gradient(90deg,#ff6a00,#ee0979);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tab{background:#1a1a1a;color:#888}.tab.active{background:white;color:black}
+#codeView::-webkit-scrollbar{width:6px}#codeView::-webkit-scrollbar-thumb{background:#333;border-radius:8px}
 
-.reply-truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;}
+.quick-prompt{background:#1a1a1a;border:1px solid rgba(255,255,255,.08);border-radius:.65rem;padding:.55rem .45rem;font-size:.72rem;color:#cfcfcf;text-align:left;transition:.15s}.quick-prompt:hover{border-color:rgba(249,115,22,.65);color:#fff;background:#222}.quick-prompt:active{transform:scale(.98)}
