@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Dr - ULTRA ADVANCED</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#0a0a0a] text-white min-h-screen">
+  <header class="p-6 border-b border-white/10 flex justify-between items-center">
+    <h1 class="text-3xl font-black gradient-text">Code Dr ULTRA</h1>
+    <span class="text-xs bg-white/10 px-3 py-1 rounded-full">By Vetrivel</span>
+  </header>
+
+  <div class="flex flex-col lg:flex-row h-[calc(100vh-80px)]">
+    <!-- Left Panel -->
+    <div class="w-full lg:w-[380px] p-6 bg-[#111] border-r border-white/10 flex flex-col gap-4">
+      <label class="text-sm text-gray-400">Enna Website Venum? (Tamil la kooda sollalam)</label>
+      <textarea id="prompt" rows="5" class="bg-[#1a1a1a] border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:border-orange-500" placeholder="ex: Swiggy maadhiri food delivery website, dark theme, full animation oda"></textarea>
+      
+      <label class="text-sm text-gray-400">Design Style</label>
+      <select id="style" class="bg-[#1a1a1a] border border-white/10 rounded-xl p-3 text-sm">
+        <option>Modern & Minimal</option>
+        <option>Dark Pro</option>
+        <option>Colorful & Creative</option>
+        <option>Glassmorphism</option>
+        <option>Apple Style</option>
+      </select>
+
+      <button onclick="generate()" id="genBtn" class="mt-4 bg-gradient-to-r from-orange-500 to-pink-600 p-4 rounded-xl font-bold hover:scale-[1.02] transition">
+        <i class="fa-solid fa-rocket"></i> Generate LIVE Website
+      </button>
+
+      <div class="mt-6 p-4 bg-white/5 rounded-xl text-xs text-gray-400">
+        <p><b>How it works:</b> Frontend = GitHub Pages<br>Backend = Hugging Face / Render</p>
+      </div>
+      <a id="downloadBtn" class="hidden mt-3 bg-white text-black p-3 rounded-xl text-center font-bold text-sm">📥 Download Code</a>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="flex-1 bg-[#0f0f0f] flex flex-col">
+      <div class="flex gap-2 p-3 border-b border-white/10 bg-[#111]">
+        <button onclick="switchTab('preview')" id="tab-preview" class="tab active px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-eye"></i> Live Preview</button>
+        <button onclick="switchTab('code')" id="tab-code" class="tab px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-code"></i> Code</button>
+      </div>
+      <div class="flex-1 relative">
+        <iframe id="preview" class="w-full h-full bg-white hidden"></iframe>
+        <pre id="codeView" class="w-full h-full p-6 overflow-auto text-xs bg-[#0a0a0a] hidden"><code>Code inga varum...</code></pre>
+        <div id="empty" class="absolute inset-0 flex items-center justify-center text-gray-500">👈 Prompt kuduthu Generate pannunga</div>
+      </div>
+    </div>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>
