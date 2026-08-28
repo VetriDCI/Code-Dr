@@ -24,7 +24,7 @@ if not GROQ_API_KEY:
 client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
 # Fast + strong code-gen model on Groq. Swap if Groq deprecates/renames it.
-MODEL_NAME = "llama-3.3-70b-versatile"
+MODEL_NAME = "openai/gpt-oss-120b"
 
 
 class PromptRequest(BaseModel):
