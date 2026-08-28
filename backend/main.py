@@ -1,4 +1,5 @@
 import os
+import re
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -25,23 +26,25 @@ class GenerationRequest(BaseModel):
 @app.post("/generate")
 def generate_code(req: GenerationRequest):
     try:
-        # Fixed model name to support vision properly via Groq API
+        # Use Qwen vision model if image is present, otherwise versatile text model
         model_name = "qwen/qwen3.6-27b" if req.image else os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
         
         system_prompt = (
-            "You are an elite frontend developer. Return ONLY a single complete, valid, production-ready HTML file "
-            "with embedded Tailwind CSS and modern JavaScript. Do NOT include markdown code blocks like ```html. "
-            "Make it fully responsive and visually stunning based on the user instructions and style."
+            "You are an elite, production-grade frontend web developer and UI/UX expert. "
+            "Your task is to generate a fully functional, stunning, responsive webpage. "
+            "CRITICAL INSTRUCTIONS: "
+            "1. Return ONLY pure raw HTML code containing embedded Tailwind CSS and interactive JavaScript. "
+            "2. Do NOT output any thinking process, chain-of-thought, notes, explanations, or analysis. "
+            "3. Do NOT wrap the code in ```html markdown blocks. Output raw code directly starting with <!DOCTYPE html>."
         )
 
         messages = [{"role": "system", "content": system_prompt}]
 
         if req.image:
-            # Multi-modal content layout for Groq Vision API
             messages.append({
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": f"Style: {req.style}. Instructions: {req.prompt}"},
+                    {"type": "text", "text": f"Style: {req.style}. Requirements from image and text prompt: {req.prompt}"},
                     {"type": "image_url", "image_url": {"url": req.image}}
                 ]
             })
@@ -54,21 +57,31 @@ def generate_code(req: GenerationRequest):
         completion = client.chat.completions.create(
             model=model_name,
             messages=messages,
-            temperature=0.7,
-            max_tokens=4000
+            temperature=0.3,
+            max_tokens=6000
         )
 
-        code = completion.choices[0].message.content.strip()
+        raw_output = completion.choices[0].message.content.strip()
         
-        # Clean markdown ticks if model adds them accidentally
-        if code.startswith("```html"):
-            code = code[7:]
-        if code.startswith("```"):
-            code = code[3:]
-        if code.endswith("```"):
-            code = code[:-3]
+        # Remove any reasoning/thinking tags if model outputs them
+        clean_code = re.sub(r'<think>.*?</think>', '', raw_output, flags=re.DOTALL).strip()
+        
+        # Strip markdown fences if present
+        if clean_code.startswith("```html"):
+            clean_code = clean_code[7:]
+        elif clean_code.startswith("```"):
+            clean_code = clean_code[3:]
+            
+        if clean_code.endswith("```"):
+            clean_code = clean_code[:-3]
 
-        return {"code": code.strip()}
+        clean_code = clean_code.strip()
+        
+        # Ensure it starts with html structure
+        if "<html" not in clean_code.lower() and "<DOCTYPE" not in clean_code.upper():
+            clean_code = f"<!DOCTYPE html>\n<html>\n<head><script src='https://cdn.tailwindcss.com'></script></head>\n<body class='bg-gray-50 p-6'>\n{clean_code}\n</body>\n</html>"
+
+        return {"code": clean_code}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
